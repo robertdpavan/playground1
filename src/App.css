@@ -37,10 +37,10 @@
 
 .brand {
   color: #ffffff;
-  font-family: 'Raleway', var(--sans);
+  font-family: 'Encode Sans Expanded', var(--sans);
   font-size: 32px;
   font-weight: 500;
-  letter-spacing: 5px;
+  letter-spacing: 4px;
   margin: 0;
 }
 
