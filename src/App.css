@@ -46,10 +46,10 @@
 
 .brand-a {
   background: linear-gradient(
-    45deg,
+    72deg,
     #9b4dff 0%,
-    #9b4dff 50%,
-    #4b2fbf 50%,
+    #9b4dff 52%,
+    #4b2fbf 52%,
     #4b2fbf 100%
   );
   -webkit-background-clip: text;
