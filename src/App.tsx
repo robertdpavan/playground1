@@ -22,6 +22,7 @@ function App() {
         <span className="smiley" role="img" aria-label="sad face" style={{ top: '78px', left: '112px' }}>🙁</span>
         <span className="smiley" role="img" aria-label="sad face" style={{ top: '104px', left: '70px' }}>🙁</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '122px', left: '86px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '84px', left: '92px' }}>🙂</span>
       </div>
     </main>
   )

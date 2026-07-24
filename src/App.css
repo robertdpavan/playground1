@@ -48,11 +48,14 @@
   /* Keep the stylized A on its own font/weight, independent of R/V/E/N */
   font-family: 'Play', var(--sans);
   font-weight: 700;
-  /* Widen the lambda to match the V's glyph width (measured 1.16x).
-     Scaling the element stretches glyph + gradient together, so the
-     vertex-to-vertex split is preserved. */
+  /* Match cap height to the Encode caps (measured 149 vs lambda 130 at
+     200px -> 32 * 149/130 ~= 36.7px). Using font-size (not scaleY) keeps
+     the feet on the baseline so the A sits flush. scaleX corrects the
+     small width remainder so the A stays as wide as the V; the transform
+     stretches glyph + gradient together, preserving the split. */
   display: inline-block;
-  transform: scaleX(1.16);
+  font-size: 36.7px;
+  transform: scaleX(1.013);
   background: linear-gradient(
     72deg,
     #506ce7 0%,
