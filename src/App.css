@@ -32,19 +32,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 0;
+  padding: 19px 0;
 }
 
 .brand {
   color: #ffffff;
-  font-family: 'Play', var(--sans);
+  font-family: 'Montserrat', var(--sans);
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 4px;
   margin: 0;
 }
 
 .brand-a {
+  /* Keep the stylized A on its own font/weight, independent of R/V/E/N */
+  font-family: 'Play', var(--sans);
+  font-weight: 700;
   background: linear-gradient(
     72deg,
     #9b4dff 0%,
