@@ -8,8 +8,18 @@
   justify-content: center;
 }
 
+.face-pile {
+  position: relative;
+  width: 208px;
+  height: 208px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: rgba(127, 127, 127, 0.06);
+}
+
 .smiley {
-  font-size: 40px;
+  position: absolute;
+  font-size: 44px;
   line-height: 1;
 }
 

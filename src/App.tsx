@@ -8,10 +8,13 @@ function App() {
           R<span className="brand-a">Λ</span>VEN
         </h1>
       </div>
-      <span className="smiley" role="img" aria-label="happy face">🙂</span>
-      <span className="smiley" role="img" aria-label="happy face">🙂</span>
-      <span className="smiley" role="img" aria-label="happy face">🙂</span>
-      <span className="smiley" role="img" aria-label="sad face">🙁</span>
+      <div className="face-pile" role="group" aria-label="pile of faces">
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '82px', left: '82px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '68px', left: '63px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '68px', left: '98px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="sad face" style={{ top: '98px', left: '58px' }}>🙁</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '100px', left: '96px' }}>🙂</span>
+      </div>
     </main>
   )
 }
