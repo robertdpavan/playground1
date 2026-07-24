@@ -18,7 +18,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: #0f172a;
+  background: #284086;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,4 +32,18 @@
   font-weight: 700;
   letter-spacing: 4px;
   margin: 0;
+}
+
+.brand-a {
+  background: linear-gradient(
+    90deg,
+    #9b4dff 0%,
+    #9b4dff 50%,
+    #4b2fbf 50%,
+    #4b2fbf 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
