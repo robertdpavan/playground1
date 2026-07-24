@@ -18,7 +18,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: #060b18;
+  background: #0f172a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,9 +27,9 @@
 
 .brand {
   color: #ffffff;
-  font-family: 'Megrim', var(--sans);
-  font-size: 34px;
-  font-weight: 400;
-  letter-spacing: 6px;
+  font-family: 'Play', var(--sans);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 4px;
   margin: 0;
 }
