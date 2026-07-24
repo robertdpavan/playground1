@@ -2,8 +2,15 @@
   min-height: 100svh;
   background: #ffffff;
   display: flex;
+  flex-direction: column;
+  gap: 16px;
   align-items: center;
   justify-content: center;
+}
+
+.smiley {
+  font-size: 40px;
+  line-height: 1;
 }
 
 .top-border {
