@@ -8,6 +8,7 @@ function App() {
       </div>
       <span className="smiley" role="img" aria-label="happy face">🙂</span>
       <span className="smiley" role="img" aria-label="happy face">🙂</span>
+      <span className="smiley" role="img" aria-label="happy face">🙂</span>
     </main>
   )
 }
