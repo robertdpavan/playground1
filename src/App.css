@@ -37,10 +37,10 @@
 
 .brand {
   color: #ffffff;
-  font-family: 'Encode Sans Expanded', var(--sans);
+  font-family: 'Michroma', var(--sans);
   font-size: 32px;
-  font-weight: 500;
-  letter-spacing: 4px;
+  font-weight: 400;
+  letter-spacing: 2px;
   margin: 0;
 }
 
@@ -48,14 +48,14 @@
   /* Keep the stylized A on its own font/weight, independent of R/V/E/N */
   font-family: 'Play', var(--sans);
   font-weight: 700;
-  /* Match cap height to the Encode caps (measured 149 vs lambda 130 at
-     200px -> 32 * 149/130 ~= 36.7px). Using font-size (not scaleY) keeps
-     the feet on the baseline so the A sits flush. scaleX corrects the
-     small width remainder so the A stays as wide as the V; the transform
-     stretches glyph + gradient together, preserving the split. */
+  /* Match cap height to the Michroma caps (measured 150 vs lambda 130 at
+     200px -> 32 * 150/130 ~= 36.9px); feet stay on the baseline via
+     font-size. Michroma's V is wide (188 vs cap 150), so scaleX 1.25
+     stretches the lambda to the V's width; glyph + gradient stretch
+     together, preserving the vertex-to-vertex split. */
   display: inline-block;
-  font-size: 36.7px;
-  transform: scaleX(1.013);
+  font-size: 36.9px;
+  transform: scaleX(1.25);
   background: linear-gradient(
     72deg,
     #506ce7 0%,
