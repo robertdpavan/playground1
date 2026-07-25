@@ -120,7 +120,7 @@ export function WifiIndicator() {
   // offline/timeout (level 0) all three are greyed.
   const C = { x: 11, y: 14 }
   const FAN = (48 * Math.PI) / 180 // half-angle of the arc fan
-  const radii = [4, 7, 10] // inner -> outer (levels 1..3)
+  const radii = [4, 7.5, 11] // inner -> outer (levels 1..3); spacing 3.5 keeps a gap at strokeWidth 3
   const archPath = (r: number) => {
     const sx = (C.x - r * Math.sin(FAN)).toFixed(2)
     const sy = (C.y - r * Math.cos(FAN)).toFixed(2)
@@ -138,7 +138,7 @@ export function WifiIndicator() {
             d={archPath(r)}
             fill="none"
             stroke="#ffffff"
-            strokeWidth={2}
+            strokeWidth={3}
             strokeLinecap="round"
             opacity={i + 1 <= level ? 1 : 0.28}
           />
