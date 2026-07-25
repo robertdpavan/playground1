@@ -3,26 +3,23 @@ import { useEffect, useRef, useState } from 'react'
 /**
  * Connection-strength indicator driven primarily by MEASURED latency:
  * every few seconds we time a small same-origin round-trip (cache-busted
- * GET of /favicon.svg) and map the RTT into 0..4 wifi arches. navigator.onLine
+ * GET of /favicon.svg) and map the RTT into 0..3 wifi arches. navigator.onLine
  * and the Network Information API are used as supplementary signals.
  *
- * Latency -> bars thresholds (ms):
- *   < 100        -> 4 bars (strong)
- *   100 .. < 250 -> 3 bars
- *   250 .. < 500 -> 2 bars
- *   500 .. <1000 -> 1 bar
- *   >= 1000 / timeout / offline -> 0 bars (offline)
+ * Latency -> arch thresholds (ms):
+ *   < 150        -> 3 arches (strong)
+ *   150 .. < 400 -> 2 arches
+ *   400 .. <1000 -> 1 arch
+ *   >= 1000 / timeout / offline -> 0 arches (offline)
  */
-const T4 = 100
-const T3 = 250
-const T2 = 500
+const T3 = 150
+const T2 = 400
 const T1 = 1000
 const MEASURE_INTERVAL_MS = 4000
 const TIMEOUT_MS = 2000
 const PING_URL = '/favicon.svg' // tiny same-origin resource
 
 function levelFromLatency(ms: number): number {
-  if (ms < T4) return 4
   if (ms < T3) return 3
   if (ms < T2) return 2
   if (ms < T1) return 1
@@ -30,7 +27,7 @@ function levelFromLatency(ms: number): number {
 }
 
 interface ConnState {
-  level: number // 0..4
+  level: number // 0..3
   latencyMs: number | null
   online: boolean
 }
@@ -42,7 +39,7 @@ interface NetworkInformationLike {
 
 function useConnectionStrength(): ConnState {
   const [state, setState] = useState<ConnState>({
-    level: 4,
+    level: 3,
     latencyMs: null,
     online: navigator.onLine,
   })
@@ -115,15 +112,15 @@ export function WifiIndicator() {
     ? 'Offline'
     : latencyMs == null
       ? 'No response (offline)'
-      : `Connection: ${latencyMs} ms — ${level}/4 bars`
+      : `Connection: ${latencyMs} ms — ${level}/3 arches`
 
-  // Concentric wifi arches radiating from a bottom-center dot: small inner
-  // arch = weak, larger outer arches = stronger. Arches with index <= level
-  // are solid white ("on"); the rest are faint grey (low-opacity white).
-  // The dot is the base/0 state (white when online, grey when offline).
+  // Three concentric wifi arches radiating from a common bottom-center
+  // point: small inner arch = weak, larger outer arch = strong. Arches with
+  // index <= level are solid white ("on"); the rest are faint grey. When
+  // offline/timeout (level 0) all three are greyed.
   const C = { x: 11, y: 14 }
   const FAN = (48 * Math.PI) / 180 // half-angle of the arc fan
-  const radii = [3.6, 6, 8.4, 10.8] // inner -> outer (levels 1..4)
+  const radii = [4, 7, 10] // inner -> outer (levels 1..3)
   const archPath = (r: number) => {
     const sx = (C.x - r * Math.sin(FAN)).toFixed(2)
     const sy = (C.y - r * Math.cos(FAN)).toFixed(2)
@@ -146,7 +143,6 @@ export function WifiIndicator() {
             opacity={i + 1 <= level ? 1 : 0.28}
           />
         ))}
-        <circle cx={C.x} cy={C.y} r={1.6} fill="#ffffff" opacity={online ? 1 : 0.28} />
       </svg>
     </span>
   )
