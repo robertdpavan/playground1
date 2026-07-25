@@ -119,11 +119,15 @@ export function WifiIndicator() {
   // level 1 = weak) + two ARCHES above it (levels 2 and 3). Elements with
   // index <= level are solid white ("on"); the rest are faint grey. At level 0
   // (offline / timeout / >=1000ms) all are greyed and a red slash is drawn.
-  // Radii: wedge 7.5 (= middle arch 9 - 1.5, so the wedge's outer edge nearly
-  // meets the middle arch with a ~1.5px gap), arches [9, 14].
-  const C = { x: 12, y: 15.5 }
-  const FAN = (48 * Math.PI) / 180 // half-angle of the fan
-  const wedgeR = 7.5
+  // Three concentric pie bands over the SAME angular fan (+/-48 deg), so all
+  // ends sit on the same two radial edges. Butt caps (not round) keep the arch
+  // ends flush along those edges. Inner = solid wedge pointed at the center;
+  // the two arches are 3px strokes centered on their radius. Equal 2px gaps
+  // (edge-to-edge): wedge outer 5.5 | gap 2 | arch 9 (7.5-10.5) | gap 2 |
+  // arch 14 (12.5-15.5).
+  const C = { x: 12, y: 16 }
+  const FAN = (48 * Math.PI) / 180 // half-angle; full fan 96 deg
+  const wedgeR = 5.5
   const archRadii = [9, 14] // levels 2, 3
   const pt = (r: number, sign: number) =>
     `${(C.x + sign * r * Math.sin(FAN)).toFixed(2)} ${(C.y - r * Math.cos(FAN)).toFixed(2)}`
@@ -132,10 +136,10 @@ export function WifiIndicator() {
 
   return (
     <span className="wifi" role="img" aria-label={title} title={title}>
-      <svg width="24" height="16" viewBox="0 0 24 16" aria-hidden="true">
+      <svg width="24" height="17" viewBox="0 0 24 17" aria-hidden="true">
         {/* level 1: inner solid pie wedge (weak) */}
         <path d={wedge} fill="#ffffff" opacity={level >= 1 ? 1 : 0.28} />
-        {/* levels 2, 3: arches above */}
+        {/* levels 2, 3: arches above (butt caps -> ends flush on the fan edges) */}
         {archRadii.map((r, i) => (
           <path
             key={r}
@@ -143,7 +147,7 @@ export function WifiIndicator() {
             fill="none"
             stroke="#ffffff"
             strokeWidth={3}
-            strokeLinecap="round"
+            strokeLinecap="butt"
             opacity={level >= i + 2 ? 1 : 0.28}
           />
         ))}
@@ -151,9 +155,9 @@ export function WifiIndicator() {
         {level === 0 && (
           <line
             x1="21"
-            y1="2.5"
+            y1="3"
             x2="3"
-            y2="14.5"
+            y2="15"
             stroke="#ff3b30"
             strokeWidth={2.5}
             strokeLinecap="round"
