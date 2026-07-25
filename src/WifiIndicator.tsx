@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 /**
  * Connection-strength indicator driven primarily by MEASURED latency:
  * every few seconds we time a small same-origin round-trip (cache-busted
- * GET of /favicon.svg) and map the RTT into 0..4 wifi bars. navigator.onLine
+ * GET of /favicon.svg) and map the RTT into 0..4 wifi arches. navigator.onLine
  * and the Network Information API are used as supplementary signals.
  *
  * Latency -> bars thresholds (ms):
@@ -117,31 +117,36 @@ export function WifiIndicator() {
       ? 'No response (offline)'
       : `Connection: ${latencyMs} ms — ${level}/4 bars`
 
-  const bars = [1, 2, 3, 4]
+  // Concentric wifi arches radiating from a bottom-center dot: small inner
+  // arch = weak, larger outer arches = stronger. Arches with index <= level
+  // are solid white ("on"); the rest are faint grey (low-opacity white).
+  // The dot is the base/0 state (white when online, grey when offline).
+  const C = { x: 11, y: 14 }
+  const FAN = (48 * Math.PI) / 180 // half-angle of the arc fan
+  const radii = [3.6, 6, 8.4, 10.8] // inner -> outer (levels 1..4)
+  const archPath = (r: number) => {
+    const sx = (C.x - r * Math.sin(FAN)).toFixed(2)
+    const sy = (C.y - r * Math.cos(FAN)).toFixed(2)
+    const ex = (C.x + r * Math.sin(FAN)).toFixed(2)
+    const ey = (C.y - r * Math.cos(FAN)).toFixed(2)
+    return `M ${sx} ${sy} A ${r} ${r} 0 0 1 ${ex} ${ey}` // bulges upward over the dot
+  }
 
   return (
     <span className="wifi" role="img" aria-label={title} title={title}>
-      <svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true">
-        {bars.map((b) => {
-          const w = 3
-          const gap = 2
-          const x = (b - 1) * (w + gap)
-          const h = 3 + (b - 1) * 3.3
-          const y = 16 - h
-          const active = b <= level
-          return (
-            <rect
-              key={b}
-              x={x}
-              y={y}
-              width={w}
-              height={h}
-              rx="1"
-              fill="#ffffff"
-              opacity={active ? 1 : 0.28}
-            />
-          )
-        })}
+      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
+        {radii.map((r, i) => (
+          <path
+            key={r}
+            d={archPath(r)}
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth={2}
+            strokeLinecap="round"
+            opacity={i + 1 <= level ? 1 : 0.28}
+          />
+        ))}
+        <circle cx={C.x} cy={C.y} r={1.6} fill="#ffffff" opacity={online ? 1 : 0.28} />
       </svg>
     </span>
   )
