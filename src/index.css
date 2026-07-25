@@ -51,11 +51,12 @@
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
+  /* Full-viewport width at every size. Removed the Vite template's
+     width: 1126px; max-width: 100%; margin: 0 auto; border-inline (which
+     centered a capped column and let the dark --bg show as side bars on
+     wide screens). The white content area now spans edge-to-edge from
+     mobile through very large (e.g. 75") displays -- no letterboxing. */
+  width: 100%;
   min-height: 100svh;
   display: flex;
   flex-direction: column;

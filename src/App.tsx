@@ -56,6 +56,7 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '86px', left: '126px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '124px', left: '90px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '80px', left: '70px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '112px', left: '112px' }}>🙂</span>
       </div>
 
       {/* Account drawer (slides in from the right) */}

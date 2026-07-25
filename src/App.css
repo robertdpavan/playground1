@@ -92,7 +92,9 @@
    positioned so the centered RAVEN wordmark stays untouched. */
 .top-actions {
   position: absolute;
-  right: 16px;
+  /* Fluid inset so the controls sit sensibly from mobile up to very large
+     screens (min 12px on phones, up to 32px on TVs). */
+  right: clamp(12px, 2vw, 32px);
   top: 50%;
   transform: translateY(-50%);
   display: flex;
