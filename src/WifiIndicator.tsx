@@ -143,6 +143,18 @@ export function WifiIndicator() {
             opacity={i + 1 <= level ? 1 : 0.28}
           />
         ))}
+        {/* No-service state: all arches grey + a red slash (top-right -> bottom-left). */}
+        {level === 0 && (
+          <line
+            x1="19"
+            y1="2"
+            x2="3"
+            y2="14"
+            stroke="#ff3b30"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+          />
+        )}
       </svg>
     </span>
   )
