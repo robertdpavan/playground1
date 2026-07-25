@@ -51,12 +51,12 @@
   font-weight: 400;
   letter-spacing: 2px;
   margin: 0;
-  /* Per-axis scale, bumped 5% uniformly: scaleX 0.9356 (0.891 x 1.05),
-     scaleY 0.8978 (0.855 x 1.05). Same proportions, 5% larger overall,
-     still centered and within the bar (transforms don't reflow, so bar
-     height is unchanged). Applied to the parent so R/V/E/N and the A scale
-     equally; the A's tuning is preserved relative to the other letters. */
-  transform: scaleX(0.9356) scaleY(0.8978);
+  /* Per-axis scale, bumped another 5%: scaleX 0.9824 (0.9356 x 1.05),
+     scaleY 0.9427 (0.8978 x 1.05). Same proportions, still centered and
+     within the bar (transforms don't reflow, so bar height is unchanged).
+     Applied to the parent so R/V/E/N and the A scale equally; the A's tuning
+     is preserved relative to the other letters. */
+  transform: scaleX(0.9824) scaleY(0.9427);
 }
 
 .brand-a {
