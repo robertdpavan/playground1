@@ -51,12 +51,11 @@
   font-weight: 400;
   letter-spacing: 2px;
   margin: 0;
-  /* Per-axis scale, bumped another 5%: scaleX 0.9824 (0.9356 x 1.05),
-     scaleY 0.9427 (0.8978 x 1.05). Same proportions, still centered and
-     within the bar (transforms don't reflow, so bar height is unchanged).
-     Applied to the parent so R/V/E/N and the A scale equally; the A's tuning
-     is preserved relative to the other letters. */
-  transform: scaleX(0.9824) scaleY(0.9427);
+  /* Horizontal-only stretch: scaleX 1.0315 (0.9824 x 1.05), scaleY 0.9427
+     unchanged -- 5% wider, same height, still centered. Applied to the parent
+     so R/V/E/N and the A stretch equally; the A's tuning is preserved
+     relative to the other letters. */
+  transform: scaleX(1.0315) scaleY(0.9427);
 }
 
 .brand-a {
