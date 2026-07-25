@@ -119,11 +119,11 @@ export function WifiIndicator() {
   // level 1 = weak) + two ARCHES above it (levels 2 and 3). Elements with
   // index <= level are solid white ("on"); the rest are faint grey. At level 0
   // (offline / timeout / >=1000ms) all are greyed and a red slash is drawn.
-  // Radii [wedge 4, arch 9, arch 14] -> center-to-center spacing 5.0 (the
-  // original 3.5 baseline + 1.5px).
+  // Radii: wedge 7.5 (= middle arch 9 - 1.5, so the wedge's outer edge nearly
+  // meets the middle arch with a ~1.5px gap), arches [9, 14].
   const C = { x: 12, y: 15.5 }
   const FAN = (48 * Math.PI) / 180 // half-angle of the fan
-  const wedgeR = 4
+  const wedgeR = 7.5
   const archRadii = [9, 14] // levels 2, 3
   const pt = (r: number, sign: number) =>
     `${(C.x + sign * r * Math.sin(FAN)).toFixed(2)} ${(C.y - r * Math.cos(FAN)).toFixed(2)}`
