@@ -2,11 +2,14 @@ import { useState } from 'react'
 import './App.css'
 import { useCurrentUser, initialsFromName } from './useCurrentUser'
 import { WifiIndicator } from './WifiIndicator'
+import { useHashRoute } from './useHashRoute'
+import { Settings } from './Settings'
 
 function App() {
   const user = useCurrentUser()
   const initials = initialsFromName(user.name)
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [route, navigate] = useHashRoute()
 
   return (
     <main className="home">
@@ -29,6 +32,9 @@ function App() {
         </div>
       </div>
 
+      {route === 'settings' ? (
+        <Settings onBack={() => navigate('home')} />
+      ) : (
       <div className="face-pile" role="group" aria-label="pile of faces">
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '82px', left: '82px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '68px', left: '63px' }}>🙂</span>
@@ -57,7 +63,9 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '124px', left: '90px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '80px', left: '70px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '112px', left: '112px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '70px', left: '90px' }}>🙂</span>
       </div>
+      )}
 
       {/* Account drawer (slides in from the right) */}
       <div
@@ -81,6 +89,16 @@ function App() {
           ×
         </button>
         <div className="drawer-content">
+          <button
+            type="button"
+            className="drawer-link"
+            onClick={() => {
+              navigate('settings')
+              setDrawerOpen(false)
+            }}
+          >
+            Settings
+          </button>
           <button
             type="button"
             className="signout-btn"
