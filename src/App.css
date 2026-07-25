@@ -112,7 +112,8 @@
 .avatar-btn {
   width: 36px;
   height: 36px;
-  border: none;
+  box-sizing: border-box;
+  border: 2px solid #ffffff; /* white ring around the outside */
   border-radius: 50%;
   /* Lightest grey that still keeps white initials clearly legible:
      #888 vs #fff is ~3.5:1 contrast (>= the 3:1 AA threshold for bold/UI
