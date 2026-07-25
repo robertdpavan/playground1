@@ -88,13 +88,25 @@
 
 /* ---- Top-bar account button + right-side drawer ---- */
 
-/* Absolutely positioned so it sits on the right without disturbing the
-   centered RAVEN wordmark. */
-.avatar-btn {
+/* Holds the wifi indicator + avatar on the right of the bar, absolutely
+   positioned so the centered RAVEN wordmark stays untouched. */
+.top-actions {
   position: absolute;
   right: 16px;
   top: 50%;
   transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wifi {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.avatar-btn {
   width: 36px;
   height: 36px;
   border: none;

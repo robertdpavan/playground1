@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import { useCurrentUser, initialsFromName } from './useCurrentUser'
+import { WifiIndicator } from './WifiIndicator'
 
 function App() {
   const user = useCurrentUser()
@@ -13,16 +14,19 @@ function App() {
         <h1 className="brand" aria-label="RAVEN">
           R<span className="brand-a">Λ</span>VEN
         </h1>
-        <button
-          type="button"
-          className="avatar-btn"
-          aria-label={`Account menu for ${user.name}`}
-          aria-haspopup="dialog"
-          aria-expanded={drawerOpen}
-          onClick={() => setDrawerOpen(true)}
-        >
-          {initials}
-        </button>
+        <div className="top-actions">
+          <WifiIndicator />
+          <button
+            type="button"
+            className="avatar-btn"
+            aria-label={`Account menu for ${user.name}`}
+            aria-haspopup="dialog"
+            aria-expanded={drawerOpen}
+            onClick={() => setDrawerOpen(true)}
+          >
+            {initials}
+          </button>
+        </div>
       </div>
 
       <div className="face-pile" role="group" aria-label="pile of faces">
@@ -47,6 +51,7 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '108px', left: '128px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '72px', left: '84px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '100px', left: '120px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '76px', left: '104px' }}>🙂</span>
       </div>
 
       {/* Account drawer (slides in from the right) */}
