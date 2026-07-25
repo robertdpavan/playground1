@@ -42,9 +42,12 @@
   font-weight: 400;
   letter-spacing: 2px;
   margin: 0;
-  /* Shrink the whole word 10%, staying centered in the bar (visual only,
-     so relative stroke/cap-height matching is preserved). */
-  transform: scale(0.9);
+  /* Shrink the whole word 10% uniformly, then pinch an extra 10%
+     horizontally (net scaleX 0.81, scaleY 0.9): narrower width, height
+     unchanged, still centered. Applied to the parent so R/V/E/N and the A
+     compress equally -- the A's width/thickness/split tuning is preserved
+     relative to the other letters. */
+  transform: scale(0.9) scaleX(0.9);
 }
 
 .brand-a {
