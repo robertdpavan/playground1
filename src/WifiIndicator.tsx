@@ -3,29 +3,32 @@ import { useEffect, useRef, useState } from 'react'
 /**
  * Connection-strength indicator driven primarily by MEASURED latency:
  * every few seconds we time a small same-origin round-trip (cache-busted
- * GET of /favicon.svg) and map the RTT into a 0..2 signal level (inner solid
- * pie wedge = weak, + one arch above = strong). navigator.onLine and the
- * Network Information API are used as supplementary signals.
+ * GET of /favicon.svg) and map the RTT into a 0..3 signal level: an inner
+ * solid pie wedge (level 1) + two arches above it (levels 2, 3).
+ * navigator.onLine and the Network Information API are supplementary signals.
  *
  * Latency -> level thresholds (ms):
- *   < 200        -> 2 (wedge + arch, strong)
- *   200 .. <1000 -> 1 (wedge only, weak)
+ *   < 150        -> 3 (wedge + both arches, strong)
+ *   150 .. < 400 -> 2 (wedge + inner arch)
+ *   400 .. <1000 -> 1 (wedge only, weak)
  *   >= 1000 / timeout / offline -> 0 (all grey + red no-signal slash)
  */
-const T2 = 200
+const T3 = 150
+const T2 = 400
 const T1 = 1000
 const MEASURE_INTERVAL_MS = 4000
 const TIMEOUT_MS = 2000
 const PING_URL = '/favicon.svg' // tiny same-origin resource
 
 function levelFromLatency(ms: number): number {
+  if (ms < T3) return 3
   if (ms < T2) return 2
   if (ms < T1) return 1
   return 0
 }
 
 interface ConnState {
-  level: number // 0..2
+  level: number // 0..3
   latencyMs: number | null
   online: boolean
 }
@@ -37,7 +40,7 @@ interface NetworkInformationLike {
 
 function useConnectionStrength(): ConnState {
   const [state, setState] = useState<ConnState>({
-    level: 2,
+    level: 3,
     latencyMs: null,
     online: navigator.onLine,
   })
@@ -110,42 +113,47 @@ export function WifiIndicator() {
     ? 'Offline'
     : latencyMs == null
       ? 'No response (offline)'
-      : `Connection: ${latencyMs} ms — ${level}/2`
+      : `Connection: ${latencyMs} ms — ${level}/3`
 
   // Signal glyph: an inner SOLID PIE WEDGE (apex at the bottom-center point,
-  // level 1 = weak) with one ARCH above it (level 2 = strong). Elements with
+  // level 1 = weak) + two ARCHES above it (levels 2 and 3). Elements with
   // index <= level are solid white ("on"); the rest are faint grey. At level 0
-  // (offline / timeout / >=1000ms) both are greyed and a red slash is drawn.
-  const C = { x: 11, y: 14 }
+  // (offline / timeout / >=1000ms) all are greyed and a red slash is drawn.
+  // Radii [wedge 4, arch 9, arch 14] -> center-to-center spacing 5.0 (the
+  // original 3.5 baseline + 1.5px).
+  const C = { x: 12, y: 15.5 }
   const FAN = (48 * Math.PI) / 180 // half-angle of the fan
-  const wedgeR = 5 // inner solid wedge outer radius (level 1)
-  const archR = 10.5 // outer arch radius (level 2); ~5.5 gap from the wedge (+2px vs before)
+  const wedgeR = 4
+  const archRadii = [9, 14] // levels 2, 3
   const pt = (r: number, sign: number) =>
     `${(C.x + sign * r * Math.sin(FAN)).toFixed(2)} ${(C.y - r * Math.cos(FAN)).toFixed(2)}`
   const wedge = `M ${C.x} ${C.y} L ${pt(wedgeR, -1)} A ${wedgeR} ${wedgeR} 0 0 1 ${pt(wedgeR, 1)} Z`
-  const arch = `M ${pt(archR, -1)} A ${archR} ${archR} 0 0 1 ${pt(archR, 1)}`
+  const archPath = (r: number) => `M ${pt(r, -1)} A ${r} ${r} 0 0 1 ${pt(r, 1)}`
 
   return (
     <span className="wifi" role="img" aria-label={title} title={title}>
-      <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
+      <svg width="24" height="16" viewBox="0 0 24 16" aria-hidden="true">
         {/* level 1: inner solid pie wedge (weak) */}
         <path d={wedge} fill="#ffffff" opacity={level >= 1 ? 1 : 0.28} />
-        {/* level 2: arch above (strong) */}
-        <path
-          d={arch}
-          fill="none"
-          stroke="#ffffff"
-          strokeWidth={3}
-          strokeLinecap="round"
-          opacity={level >= 2 ? 1 : 0.28}
-        />
+        {/* levels 2, 3: arches above */}
+        {archRadii.map((r, i) => (
+          <path
+            key={r}
+            d={archPath(r)}
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth={3}
+            strokeLinecap="round"
+            opacity={level >= i + 2 ? 1 : 0.28}
+          />
+        ))}
         {/* No-service (level 0): all grey + red slash (top-right -> bottom-left). */}
         {level === 0 && (
           <line
-            x1="19"
-            y1="2"
+            x1="21"
+            y1="2.5"
             x2="3"
-            y2="14"
+            y2="14.5"
             stroke="#ff3b30"
             strokeWidth={2.5}
             strokeLinecap="round"
