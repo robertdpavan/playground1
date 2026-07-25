@@ -51,12 +51,11 @@
   font-weight: 400;
   letter-spacing: 2px;
   margin: 0;
-  /* Uniform 0.9 shrink, then a horizontal scale so the word is 10% wider
-     than before: net scaleX 0.891 (0.9 x 0.99), scaleY 0.9 -- height
-     unchanged, still centered. Applied to the parent so R/V/E/N and the A
-     scale equally; the A's cap-height/stroke/split tuning is preserved
-     relative to the other letters. */
-  transform: scale(0.9) scaleX(0.99);
+  /* Per-axis scale: scaleX 0.891 (width, unchanged), scaleY 0.855 (height,
+     pinched 5% from 0.9). Still centered. Applied to the parent so R/V/E/N
+     and the A scale equally; the A's cap-height/stroke/split tuning is
+     preserved relative to the other letters. */
+  transform: scaleX(0.891) scaleY(0.855);
 }
 
 .brand-a {
