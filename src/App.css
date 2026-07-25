@@ -85,3 +85,107 @@
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
+
+/* ---- Top-bar account button + right-side drawer ---- */
+
+/* Absolutely positioned so it sits on the right without disturbing the
+   centered RAVEN wordmark. */
+.avatar-btn {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  /* Lightest grey that still keeps white initials clearly legible:
+     #888 vs #fff is ~3.5:1 contrast (>= the 3:1 AA threshold for bold/UI
+     text). Going lighter (e.g. #999) starts to wash the white out. */
+  background: #888888;
+  color: #ffffff;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-btn:hover {
+  background: #7d7d7d;
+}
+.avatar-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease;
+  z-index: 40;
+}
+.drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(320px, 82vw);
+  box-sizing: border-box;
+  padding: 16px;
+  background: #ffffff;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.18);
+  transform: translateX(100%);
+  transition: transform 0.28s ease;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+}
+.drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-close {
+  align-self: flex-end;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: #333333;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+.drawer-close:focus-visible {
+  outline: 2px solid #888888;
+  outline-offset: 2px;
+}
+
+.drawer-content {
+  margin-top: 8px;
+}
+.signout-btn {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #08060d;
+  font-family: var(--sans);
+  font-size: 15px;
+  cursor: pointer;
+}
+.signout-btn:hover {
+  background: #ececec;
+}

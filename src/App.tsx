@@ -1,13 +1,30 @@
+import { useState } from 'react'
 import './App.css'
+import { useCurrentUser, initialsFromName } from './useCurrentUser'
 
 function App() {
+  const user = useCurrentUser()
+  const initials = initialsFromName(user.name)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+
   return (
     <main className="home">
       <div className="top-border">
         <h1 className="brand" aria-label="RAVEN">
           R<span className="brand-a">Λ</span>VEN
         </h1>
+        <button
+          type="button"
+          className="avatar-btn"
+          aria-label={`Account menu for ${user.name}`}
+          aria-haspopup="dialog"
+          aria-expanded={drawerOpen}
+          onClick={() => setDrawerOpen(true)}
+        >
+          {initials}
+        </button>
       </div>
+
       <div className="face-pile" role="group" aria-label="pile of faces">
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '82px', left: '82px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '68px', left: '63px' }}>🙂</span>
@@ -29,7 +46,43 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '94px', left: '66px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '108px', left: '128px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '72px', left: '84px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '100px', left: '120px' }}>🙂</span>
       </div>
+
+      {/* Account drawer (slides in from the right) */}
+      <div
+        className={`drawer-overlay${drawerOpen ? ' open' : ''}`}
+        onClick={() => setDrawerOpen(false)}
+        aria-hidden={!drawerOpen}
+      />
+      <aside
+        className={`drawer${drawerOpen ? ' open' : ''}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Account menu"
+        aria-hidden={!drawerOpen}
+      >
+        <button
+          type="button"
+          className="drawer-close"
+          aria-label="Close account menu"
+          onClick={() => setDrawerOpen(false)}
+        >
+          ×
+        </button>
+        <div className="drawer-content">
+          <button
+            type="button"
+            className="signout-btn"
+            onClick={() => {
+              // TODO(auth): call the real sign-out (clear session / redirect) here.
+              setDrawerOpen(false)
+            }}
+          >
+            Sign out
+          </button>
+        </div>
+      </aside>
     </main>
   )
 }
