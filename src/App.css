@@ -42,12 +42,17 @@
   font-weight: 400;
   letter-spacing: 2px;
   margin: 0;
+  /* Shrink the whole word 10%, staying centered in the bar (visual only,
+     so relative stroke/cap-height matching is preserved). */
+  transform: scale(0.9);
 }
 
 .brand-a {
-  /* Keep the stylized A on its own font/weight, independent of R/V/E/N */
+  /* Keep the stylized A on its own font/weight, independent of R/V/E/N.
+     Play 400 (vs 700) to match Michroma's monoline stroke thickness
+     (measured lambda 3.72px at 400 vs 5.92 at 700, Michroma ~2.83). */
   font-family: 'Play', var(--sans);
-  font-weight: 700;
+  font-weight: 400;
   /* Match cap height to the Michroma caps (measured 150 vs lambda 130 at
      200px -> 32 * 150/130 ~= 36.9px); feet stay on the baseline via
      font-size. Michroma's V is wide (188 vs cap 150), so scaleX 1.25
@@ -55,7 +60,7 @@
      together, preserving the vertex-to-vertex split. */
   display: inline-block;
   font-size: 36.9px;
-  transform: scaleX(1.25);
+  transform: translateX(2px) scaleX(1.25);
   background: linear-gradient(
     72deg,
     #506ce7 0%,
