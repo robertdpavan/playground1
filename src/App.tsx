@@ -115,6 +115,7 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '54px', left: '98px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '146px', left: '100px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '50px', left: '86px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '150px', left: '86px' }}>🙂</span>
           </div>
         </>
       )}
@@ -171,17 +172,17 @@ function App() {
           >
             Settings
           </button>
-          <button
-            type="button"
-            className="signout-btn"
-            onClick={() => {
-              // TODO(auth): call the real sign-out (clear session / redirect) here.
-              setDrawerOpen(false)
-            }}
-          >
-            Sign out
-          </button>
         </div>
+        <button
+          type="button"
+          className="signout-btn"
+          onClick={() => {
+            // TODO(auth): call the real sign-out (clear session / redirect) here.
+            setDrawerOpen(false)
+          }}
+        >
+          Sign out
+        </button>
       </aside>
     </main>
   )
