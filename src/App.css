@@ -273,6 +273,10 @@
 .drawer-link:hover {
   background: #f5f5f5;
 }
+.drawer-link:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
 
 /* ---- Settings screen (fluid mobile -> large) ---- */
 .settings {

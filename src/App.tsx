@@ -11,6 +11,40 @@ function App() {
   const initials = initialsFromName(user.name)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [route, navigate] = useHashRoute()
+  const [updateStatus, setUpdateStatus] = useState<
+    'idle' | 'checking' | 'uptodate' | 'error'
+  >('idle')
+
+  // Version-check + reload flow (no service worker): fetch the deployed
+  // /version.json (cache-busted, no-store) and compare to the version baked
+  // into this bundle. Different -> reload to pick up fresh assets; same ->
+  // transient "up to date"; failure -> transient error.
+  const handleUpgrade = async () => {
+    setUpdateStatus('checking')
+    try {
+      const res = await fetch(`/version.json?_=${Date.now()}`, { cache: 'no-store' })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = (await res.json()) as { version?: string }
+      if (data.version && data.version !== __APP_VERSION__) {
+        window.location.reload()
+        return
+      }
+      setUpdateStatus('uptodate')
+      setTimeout(() => setUpdateStatus('idle'), 2000)
+    } catch {
+      setUpdateStatus('error')
+      setTimeout(() => setUpdateStatus('idle'), 2500)
+    }
+  }
+
+  const upgradeLabel =
+    updateStatus === 'checking'
+      ? 'Checking…'
+      : updateStatus === 'uptodate'
+        ? "You're up to date ✓"
+        : updateStatus === 'error'
+          ? 'Check failed — try again'
+          : 'Upgrade/Update'
 
   // Size/position the search box relative to the RAVEN logo: match RAVEN's
   // rendered width, and mirror it across the blue/white boundary (its top edge
@@ -149,6 +183,7 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '50px', left: '86px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '150px', left: '86px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '46px', left: '104px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '154px', left: '110px' }}>🙂</span>
           </div>
         </>
       )}
@@ -190,12 +225,10 @@ function App() {
           <button
             type="button"
             className="drawer-link"
-            onClick={() => {
-              // TODO: wire up the real upgrade/update flow.
-              setDrawerOpen(false)
-            }}
+            onClick={handleUpgrade}
+            disabled={updateStatus === 'checking'}
           >
-            Upgrade/Update
+            {upgradeLabel}
           </button>
           <button
             type="button"
