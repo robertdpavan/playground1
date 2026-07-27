@@ -19,6 +19,7 @@ function App() {
   const barRef = useRef<HTMLDivElement>(null)
   const homeRef = useRef<HTMLElement>(null)
   const [searchBox, setSearchBox] = useState<{ top: number } | null>(null)
+  const [barHeight, setBarHeight] = useState<number | null>(null)
 
   useLayoutEffect(() => {
     const measure = () => {
@@ -34,6 +35,7 @@ function App() {
       setSearchBox({
         top: boundary + x - homeRect.top, // same distance x below the boundary
       })
+      setBarHeight(barRect.height) // main top-bar height (drawer header = 2.5x)
     }
     measure()
     window.addEventListener('resize', measure)
@@ -112,6 +114,7 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '142px', left: '80px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '54px', left: '98px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '146px', left: '100px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '50px', left: '86px' }}>🙂</span>
           </div>
         </>
       )}
@@ -137,6 +140,16 @@ function App() {
         >
           ×
         </button>
+        <div
+          className="drawer-header"
+          style={barHeight != null ? { height: barHeight * 2.5 } : undefined}
+        >
+          <div className="drawer-avatar" role="img" aria-label={user.name}>
+            {initials}
+          </div>
+          <div className="drawer-username">{user.username}</div>
+          <div className="drawer-email">{user.email}</div>
+        </div>
         <div className="drawer-content">
           <button
             type="button"

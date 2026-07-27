@@ -7,11 +7,17 @@
 
 export interface CurrentUser {
   name: string
+  username: string
+  email: string
 }
 
 export function useCurrentUser(): CurrentUser {
   // TODO(auth): return the real signed-in user here instead of this placeholder.
-  return { name: 'Robert Pavan' }
+  return {
+    name: 'Robert Pavan',
+    username: 'robertpavan',
+    email: 'robert.pavan@example.com',
+  }
 }
 
 /** Up-to-two-letter initials from a display name; falls back to "RP". */

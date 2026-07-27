@@ -173,19 +173,68 @@
 }
 
 .drawer-close {
-  align-self: flex-end;
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 1;
   width: 32px;
   height: 32px;
   border: none;
   background: transparent;
-  color: #333333;
+  color: #ffffff; /* sits over the blue header */
   font-size: 26px;
   line-height: 1;
   cursor: pointer;
 }
 .drawer-close:focus-visible {
-  outline: 2px solid #888888;
+  outline: 2px solid #ffffff;
   outline-offset: 2px;
+}
+
+/* Drawer header: blue bar (2.5x the main top bar height via inline style),
+   with a big avatar + username + email centered as a group. */
+.drawer-header {
+  flex: 0 0 auto;
+  margin: -16px -16px 12px; /* span to the drawer edges (drawer has 16px padding) */
+  padding: 12px 16px;
+  box-sizing: border-box;
+  min-height: 150px; /* fallback before the bar height is measured */
+  background: #183058;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.drawer-avatar {
+  width: 64px;
+  height: 64px;
+  box-sizing: border-box;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #888888;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.drawer-username {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 16px;
+  color: #ffffff;
+}
+.drawer-email {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+  word-break: break-word;
 }
 
 .drawer-content {
