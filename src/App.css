@@ -285,7 +285,7 @@
   background: #ffffff;
   color: #08060d;
   font-family: var(--sans);
-  font-size: clamp(15px, 2.4vw, 17px);
+  font-size: 13px; /* small enough that "Press / to search…" fits the box */
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
