@@ -32,7 +32,7 @@ function App() {
       const boundary = barRect.bottom // blue/white boundary
       const x = boundary - b.bottom // RAVEN bottom above the boundary
       setSearchBox({
-        width: b.width * 1.05, // 5% wider than the rendered logo width
+        width: b.width * 1.155, // 1.05 x 1.10 = 15.5% wider than the logo width
         top: boundary + x - homeRect.top, // same distance x below the boundary
       })
     }
@@ -109,6 +109,7 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '134px', left: '96px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '62px', left: '96px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '138px', left: '112px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '58px', left: '110px' }}>🙂</span>
           </div>
         </>
       )}
