@@ -4,6 +4,7 @@ import { useCurrentUser, initialsFromName } from './useCurrentUser'
 import { WifiIndicator } from './WifiIndicator'
 import { useHashRoute } from './useHashRoute'
 import { Settings } from './Settings'
+import { SearchBar } from './SearchBar'
 
 function App() {
   const user = useCurrentUser()
@@ -35,7 +36,9 @@ function App() {
       {route === 'settings' ? (
         <Settings onBack={() => navigate('home')} />
       ) : (
-      <div className="face-pile" role="group" aria-label="pile of faces">
+        <>
+          <SearchBar />
+          <div className="face-pile" role="group" aria-label="pile of faces">
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '82px', left: '82px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '68px', left: '63px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '68px', left: '98px' }}>🙂</span>
@@ -72,7 +75,9 @@ function App() {
         <span className="smiley" role="img" aria-label="sad face" style={{ top: '64px', left: '84px' }}>🙁</span>
         <span className="smiley" role="img" aria-label="sad face" style={{ top: '128px', left: '76px' }}>🙁</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '98px', left: '132px' }}>🙂</span>
-      </div>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '134px', left: '96px' }}>🙂</span>
+          </div>
+        </>
       )}
 
       {/* Account drawer (slides in from the right) */}
