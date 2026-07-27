@@ -21,6 +21,38 @@ function App() {
   const [searchBox, setSearchBox] = useState<{ top: number } | null>(null)
   const [barHeight, setBarHeight] = useState<number | null>(null)
 
+  // Shrink the drawer email font so it fits the drawer width on one line
+  // (handles long addresses like robert.pavan@raventelemetry.com).
+  const emailRef = useRef<HTMLDivElement>(null)
+  const [emailFontSize, setEmailFontSize] = useState(13)
+  useLayoutEffect(() => {
+    const fit = () => {
+      const el = emailRef.current
+      const header = el?.parentElement
+      if (!el || !header) return
+      const cs = getComputedStyle(el)
+      const hcs = getComputedStyle(header)
+      const avail =
+        header.clientWidth -
+        parseFloat(hcs.paddingLeft) -
+        parseFloat(hcs.paddingRight) -
+        4 // small margin so it never touches the edges
+      if (avail <= 0) return
+      const BASE = 13
+      const ctx = document.createElement('canvas').getContext('2d')
+      if (!ctx) return
+      ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${BASE}px ${cs.fontFamily}`
+      let w = ctx.measureText(user.email).width
+      const ls = parseFloat(cs.letterSpacing) // canvas ignores letter-spacing
+      if (!Number.isNaN(ls)) w += ls * (user.email.length - 1)
+      setEmailFontSize(w > avail ? Math.max(8, (BASE * avail) / w) : BASE)
+    }
+    fit()
+    window.addEventListener('resize', fit)
+    document.fonts?.ready.then(fit).catch(() => {})
+    return () => window.removeEventListener('resize', fit)
+  }, [user.email])
+
   useLayoutEffect(() => {
     const measure = () => {
       const brand = brandRef.current
@@ -116,6 +148,7 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '146px', left: '100px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '50px', left: '86px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '150px', left: '86px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '46px', left: '104px' }}>🙂</span>
           </div>
         </>
       )}
@@ -149,7 +182,9 @@ function App() {
             {initials}
           </div>
           <div className="drawer-username">{user.username}</div>
-          <div className="drawer-email">{user.email}</div>
+          <div className="drawer-email" ref={emailRef} style={{ fontSize: emailFontSize }}>
+            {user.email}
+          </div>
         </div>
         <div className="drawer-content">
           <button

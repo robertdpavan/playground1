@@ -16,7 +16,7 @@ export function useCurrentUser(): CurrentUser {
   return {
     name: 'Robert Pavan',
     username: 'robertpavan',
-    email: 'robert.pavan@example.com',
+    email: 'robert.pavan@raventelemetry.com',
   }
 }
 

@@ -231,10 +231,10 @@
 }
 .drawer-email {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 13px; /* base; shrunk via inline style to fit on one line */
   color: rgba(255, 255, 255, 0.75);
   text-align: center;
-  word-break: break-word;
+  white-space: nowrap;
 }
 
 .drawer-content {
