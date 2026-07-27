@@ -111,6 +111,7 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '58px', left: '110px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '142px', left: '80px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '54px', left: '98px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '146px', left: '100px' }}>🙂</span>
           </div>
         </>
       )}
@@ -137,6 +138,16 @@ function App() {
           ×
         </button>
         <div className="drawer-content">
+          <button
+            type="button"
+            className="drawer-link"
+            onClick={() => {
+              // TODO: wire up the real upgrade/update flow.
+              setDrawerOpen(false)
+            }}
+          >
+            Upgrade/Update
+          </button>
           <button
             type="button"
             className="drawer-link"
