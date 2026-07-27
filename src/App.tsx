@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import './App.css'
 import { useCurrentUser, initialsFromName } from './useCurrentUser'
 import { WifiIndicator } from './WifiIndicator'
@@ -12,10 +12,41 @@ function App() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [route, navigate] = useHashRoute()
 
+  // Size/position the search box relative to the RAVEN logo: match RAVEN's
+  // rendered width, and mirror it across the blue/white boundary (its top edge
+  // sits as far below the boundary as RAVEN's bottom edge is above it).
+  const brandRef = useRef<HTMLHeadingElement>(null)
+  const barRef = useRef<HTMLDivElement>(null)
+  const homeRef = useRef<HTMLElement>(null)
+  const [searchBox, setSearchBox] = useState<{ width: number; top: number } | null>(null)
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const brand = brandRef.current
+      const bar = barRef.current
+      const home = homeRef.current
+      if (!brand || !bar || !home) return
+      const b = brand.getBoundingClientRect() // post-transform RAVEN box
+      const barRect = bar.getBoundingClientRect()
+      const homeRect = home.getBoundingClientRect()
+      const boundary = barRect.bottom // blue/white boundary
+      const x = boundary - b.bottom // RAVEN bottom above the boundary
+      setSearchBox({
+        width: b.width, // rendered logo width
+        top: boundary + x - homeRect.top, // same distance x below the boundary
+      })
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    // RAVEN uses the Aldrich webfont; re-measure once it finishes loading.
+    document.fonts?.ready.then(measure).catch(() => {})
+    return () => window.removeEventListener('resize', measure)
+  }, [])
+
   return (
-    <main className="home">
-      <div className="top-border">
-        <h1 className="brand" aria-label="RAVEN">
+    <main className="home" ref={homeRef}>
+      <div className="top-border" ref={barRef}>
+        <h1 className="brand" aria-label="RAVEN" ref={brandRef}>
           R<span className="brand-a">Λ</span>VEN
         </h1>
         <div className="top-actions">
@@ -37,7 +68,7 @@ function App() {
         <Settings onBack={() => navigate('home')} />
       ) : (
         <>
-          <SearchBar />
+          <SearchBar box={searchBox} />
           <div className="face-pile" role="group" aria-label="pile of faces">
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '82px', left: '82px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '68px', left: '63px' }}>🙂</span>
@@ -76,6 +107,7 @@ function App() {
         <span className="smiley" role="img" aria-label="sad face" style={{ top: '128px', left: '76px' }}>🙁</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '98px', left: '132px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '134px', left: '96px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '62px', left: '96px' }}>🙂</span>
           </div>
         </>
       )}

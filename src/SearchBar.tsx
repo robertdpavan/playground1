@@ -24,9 +24,23 @@ function isTypingTarget(target: EventTarget | null): boolean {
   return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable
 }
 
-export function SearchBar() {
+export function SearchBar({ box }: { box?: { width: number; top: number } | null }) {
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+
+  // When measured, size to the RAVEN logo width and mirror it below the
+  // blue/white boundary (absolutely positioned within .home).
+  const style = box
+    ? {
+        position: 'absolute' as const,
+        top: box.top,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: box.width,
+        maxWidth: 'none' as const,
+        padding: 0,
+      }
+    : undefined
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -48,7 +62,7 @@ export function SearchBar() {
   const results = q ? SEARCH_ITEMS.filter((item) => item.toLowerCase().includes(q)) : []
 
   return (
-    <div className="search" role="search">
+    <div className="search" role="search" style={style}>
       <input
         ref={inputRef}
         type="text"
