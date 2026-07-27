@@ -286,6 +286,7 @@
   color: #08060d;
   font-family: var(--sans);
   font-size: 13px; /* small enough that "Press / to search…" fits the box */
+  text-align: center; /* centered blurb -> equal left/right side gaps */
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
