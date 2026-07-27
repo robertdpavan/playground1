@@ -119,37 +119,63 @@ export function WifiIndicator() {
   // level 1 = weak) + two ARCHES above it (levels 2 and 3). Elements with
   // index <= level are solid white ("on"); the rest are faint grey. At level 0
   // (offline / timeout / >=1000ms) all are greyed and a red slash is drawn.
-  // Three concentric pie bands over the SAME angular fan (+/-48 deg), so all
-  // ends sit on the same two radial edges. Butt caps (not round) keep the arch
-  // ends flush along those edges. Inner = solid wedge pointed at the center;
-  // the two arches are 3px strokes centered on their radius. Equal 2px gaps
-  // (edge-to-edge): wedge outer 5.5 | gap 2 | arch 9 (7.5-10.5) | gap 2 |
-  // arch 14 (12.5-15.5).
+  // Three concentric pie bands over the SAME +/-48 deg fan, all ends on the
+  // same two radial edges. Drawn as FILLED shapes so every corner can be
+  // softened by a small rounding radius RC (quadratic corners) -- subtle, not
+  // full round caps. Bands kept at r+/-1.5, so equal 2px gaps are preserved:
+  // wedge outer 5.5 | gap 2 | arch 9 (7.5-10.5) | gap 2 | arch 14 (12.5-15.5).
   const C = { x: 12, y: 16 }
-  const FAN = (48 * Math.PI) / 180 // half-angle; full fan 96 deg
+  const FAN = (48 * Math.PI) / 180
+  const H = 1.5 // half band width (3px bands)
+  const RC = 0.8 // small corner-rounding radius
+  const f = (n: number) => n.toFixed(2)
+  const P = (r: number, a: number) =>
+    `${f(C.x + r * Math.sin(a))} ${f(C.y - r * Math.cos(a))}`
+
+  // Filled annular-sector band at radius r, with all four corners rounded.
+  const band = (r: number) => {
+    const ri = r - H
+    const ro = r + H
+    const dO = RC / ro
+    const dI = RC / ri
+    return [
+      `M ${P(ro, -FAN + dO)}`,
+      `A ${f(ro)} ${f(ro)} 0 0 1 ${P(ro, FAN - dO)}`, // outer arc
+      `Q ${P(ro, FAN)} ${P(ro - RC, FAN)}`, // round outer-right
+      `L ${P(ri + RC, FAN)}`, // right edge
+      `Q ${P(ri, FAN)} ${P(ri, FAN - dI)}`, // round inner-right
+      `A ${f(ri)} ${f(ri)} 0 0 0 ${P(ri, -FAN + dI)}`, // inner arc (reverse)
+      `Q ${P(ri, -FAN)} ${P(ri + RC, -FAN)}`, // round inner-left
+      `L ${P(ro - RC, -FAN)}`, // left edge
+      `Q ${P(ro, -FAN)} ${P(ro, -FAN + dO)}`, // round outer-left
+      'Z',
+    ].join(' ')
+  }
+
+  // Filled pie wedge (apex at C), outer corners + apex rounded by RC.
   const wedgeR = 5.5
+  const dW = RC / wedgeR
+  const wedge = [
+    `M ${P(RC, -FAN)}`,
+    `L ${P(wedgeR - RC, -FAN)}`, // left edge from near-apex outward
+    `Q ${P(wedgeR, -FAN)} ${P(wedgeR, -FAN + dW)}`, // round outer-left
+    `A ${f(wedgeR)} ${f(wedgeR)} 0 0 1 ${P(wedgeR, FAN - dW)}`, // outer arc
+    `Q ${P(wedgeR, FAN)} ${P(wedgeR - RC, FAN)}`, // round outer-right
+    `L ${P(RC, FAN)}`, // right edge back toward apex
+    `Q ${f(C.x)} ${f(C.y)} ${P(RC, -FAN)}`, // round apex
+    'Z',
+  ].join(' ')
+
   const archRadii = [9, 14] // levels 2, 3
-  const pt = (r: number, sign: number) =>
-    `${(C.x + sign * r * Math.sin(FAN)).toFixed(2)} ${(C.y - r * Math.cos(FAN)).toFixed(2)}`
-  const wedge = `M ${C.x} ${C.y} L ${pt(wedgeR, -1)} A ${wedgeR} ${wedgeR} 0 0 1 ${pt(wedgeR, 1)} Z`
-  const archPath = (r: number) => `M ${pt(r, -1)} A ${r} ${r} 0 0 1 ${pt(r, 1)}`
 
   return (
     <span className="wifi" role="img" aria-label={title} title={title}>
       <svg width="24" height="17" viewBox="0 0 24 17" aria-hidden="true">
         {/* level 1: inner solid pie wedge (weak) */}
         <path d={wedge} fill="#ffffff" opacity={level >= 1 ? 1 : 0.28} />
-        {/* levels 2, 3: arches above (butt caps -> ends flush on the fan edges) */}
+        {/* levels 2, 3: rounded-corner bands above */}
         {archRadii.map((r, i) => (
-          <path
-            key={r}
-            d={archPath(r)}
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth={3}
-            strokeLinecap="butt"
-            opacity={level >= i + 2 ? 1 : 0.28}
-          />
+          <path key={r} d={band(r)} fill="#ffffff" opacity={level >= i + 2 ? 1 : 0.28} />
         ))}
         {/* No-service (level 0): all grey + red slash (top-right -> bottom-left). */}
         {level === 0 && (
