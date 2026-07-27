@@ -44,7 +44,7 @@ function App() {
         ? "You're up to date ✓"
         : updateStatus === 'error'
           ? 'Check failed — try again'
-          : 'Upgrade/Update'
+          : 'Refresh/Update'
 
   // Size/position the search box relative to the RAVEN logo: match RAVEN's
   // rendered width, and mirror it across the blue/white boundary (its top edge
@@ -184,6 +184,7 @@ function App() {
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '150px', left: '86px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '46px', left: '104px' }}>🙂</span>
         <span className="smiley" role="img" aria-label="happy face" style={{ top: '154px', left: '110px' }}>🙂</span>
+        <span className="smiley" role="img" aria-label="happy face" style={{ top: '44px', left: '90px' }}>🙂</span>
           </div>
         </>
       )}
